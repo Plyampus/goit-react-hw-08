@@ -1,29 +1,45 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Contact from "../Contact/Contact";
-import css from "../ContactList/ContactList.module.css";
-import { selectError, selectIsLoading } from "../../redux/selectors";
-import { filteredContacts } from "../../redux/contactsOps";
-
+import ModalDelete from "../ModalDelete/ModalDelete";
+import css from "./ContactList.module.css";
+import { selectError, selectIsLoading } from "../../redux/contacts/selectors";
+import { selectFilteredContacts } from "../../redux/contacts/slice";
+import Loader from "../Loader/Loader";
 
 const ContactList = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedContactId, setSelectedContactId] = useState(null);
+
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-  const contacts = useSelector(filteredContacts);
+  const contacts = useSelector(selectFilteredContacts);
+
+  const openModalDelete = (id) => {
+    setSelectedContactId(id);
+    setModalOpen(true);
+  };
+
+  const closeModalDelete = () => {
+    setSelectedContactId(null);
+    setModalOpen(false);
+  };
 
   return (
     <ul className={css.contactList}>
-      {isLoading && !error && <b>Request in progress...</b>}
+      {isLoading && !error && <Loader />}
       {contacts.map((contact) => {
         return (
           <li key={contact.id} className={css.contactItem}>
-            <Contact
-              name={contact.name}
-              number={contact.number}
-              id={contact.id}
-            />
+            <Contact contact={contact} modalOpenDelete={openModalDelete} />
           </li>
         );
       })}
+      <ModalDelete
+        open={modalOpen}
+        close={closeModalDelete}
+        id={selectedContactId}
+      />
     </ul>
   );
 };

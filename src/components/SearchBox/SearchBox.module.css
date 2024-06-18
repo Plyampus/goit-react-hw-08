@@ -1,18 +1,17 @@
 .searchBoxContainer {
   margin-bottom: 20px;
   margin-right: 20px;
-  margin: 0 auto;
 }
 
 .searchBoxInput {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .title {
   margin-bottom: 10px;
-  color: #333333;
+  color: #333;
 }

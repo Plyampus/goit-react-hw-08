@@ -1,7 +1,10 @@
 .formContainer {
-  max-width: 400px;
-  margin: 0 auto;
   margin-bottom: 20px;
+  background-color: #d7d7d7;
+  width: 500px;
+  height: 250px;
+  border-radius: 8px;
+  padding: 20px;
 }
 
 .label {
@@ -12,9 +15,14 @@
 .inputField {
   width: 100%;
   padding: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.wrap {
+  height: 60px;
+  margin-bottom: 5px;
 }
 
 .errorMessage {

@@ -1,23 +1,12 @@
 import css from "./ContactForm.module.css";
 
 import { Field, Form, Formik, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { useId } from "react";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps";
-
-const FeedbackSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  number: Yup.string()
-    .matches(
-      /^(?:\d{10}|\d{3}-\d{3}-\d{2}-\d{2})$/,
-      "Phone number must be 10 digits long or in format xxx-xxx-xx-xx"
-    )
-    .required("Required"),
-});
+import { addContact } from "../../redux/contacts/operations";
+import toast from "react-hot-toast";
+import { FeedbackSchema } from "../../validation";
+import { handleKeyPress } from "../../handleKeyPress";
 
 const ContactForm = () => {
   const nameFieldId = useId();
@@ -34,7 +23,16 @@ const ContactForm = () => {
           name: values.username,
           number: values.number,
         };
-        dispatch(addContact(newContact));
+        dispatch(addContact(newContact))
+          .unwrap()
+          .then(() => {
+            toast.success("Successfully add!", { position: "top-center" });
+          })
+          .catch(() => {
+            toast.error("Error, input correct data", {
+              position: "top-center",
+            });
+          });
         actions.resetForm();
       }}
     >
@@ -42,32 +40,38 @@ const ContactForm = () => {
         <label htmlFor={nameFieldId} className={css.label}>
           Username
         </label>
-        <Field
-          type="text"
-          name="username"
-          id={nameFieldId}
-          className={css.inputField}
-        />
-        <ErrorMessage
-          name="username"
-          component="span"
-          className={css.errorMessage}
-        />
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            name="username"
+            id={nameFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="username"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
 
         <label htmlFor={phoneFieldId} className={css.label}>
           Phone
         </label>
-        <Field
-          type="text"
-          name="number"
-          id={phoneFieldId}
-          className={css.inputField}
-        />
-        <ErrorMessage
-          name="number"
-          component="span"
-          className={css.errorMessage}
-        />
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            pattern="\d*"
+            onKeyPress={handleKeyPress}
+            name="number"
+            id={phoneFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="number"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
 
         <button type="submit" className={css.submitButton}>
           Add contact
