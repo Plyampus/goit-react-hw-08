@@ -1,0 +1,32 @@
+.contact {
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.contactName {
+  font-weight: bold;
+}
+
+.contactNumber {
+  color: #666;
+}
+
+.deleteButton {
+  cursor: pointer;
+  border: none;
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  fill: #dc0007;
+}
+
+.icon:hover {
+  fill: #a90006;
+}
+
+.data {
+  margin-right: auto;
+}
